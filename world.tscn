@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://bdnv4m1nj8bqm"]
+
+[ext_resource type="PackedScene" uid="uid://b8tarbp8eo3os" path="res://character.tscn" id="1_la2vg"]
+[ext_resource type="Script" path="res://CameraController.gd" id="2_2dapd"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_jngbt"]
+
+[sub_resource type="Sky" id="Sky_7cdvf"]
+sky_material = SubResource("PhysicalSkyMaterial_jngbt")
+
+[sub_resource type="Environment" id="Environment_4a6xl"]
+background_mode = 2
+sky = SubResource("Sky_7cdvf")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8f4kp"]
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_f0uiq"]
+size = Vector3(20, 0.1, 20)
+
+[node name="World" type="Node3D"]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_4a6xl")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.867948, 0.496656, 0, -0.496656, 0.867948, 0, 7.98389, 13.0468)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_8f4kp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_f0uiq")
+
+[node name="Character" parent="." instance=ExtResource("1_la2vg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="CameraController" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54046, 2.83615)
+script = ExtResource("2_2dapd")
+target = NodePath("../Character")
+camera_distance = 5.0
+camera_height = 3.0
+rotation_speed = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
