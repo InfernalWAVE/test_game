@@ -23,14 +23,20 @@ func _input(event):
 				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 	if event is InputEventMouseMotion:
+		if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
+			return
+
 		var horizontal_rotation = -event.relative.x * rotation_speed * get_process_delta_time()
-		var vertical_rotation_delta = -event.relative.y * rotation_speed * get_process_delta_time()
+		var vertical_rotation_delta = event.relative.y * rotation_speed * get_process_delta_time()
 		
 		target_node.rotate_y(deg_to_rad(horizontal_rotation))
 		vertical_rotation += deg_to_rad(vertical_rotation_delta)
 		vertical_rotation = clamp(vertical_rotation, deg_to_rad(-80), deg_to_rad(80))
 
 func _process(delta):
+	if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
+		return
+
 	var target_position = target_node.global_transform.origin
 	var target_direction = -target_node.global_transform.basis.z
 	var target_height = Vector3.UP * camera_height
